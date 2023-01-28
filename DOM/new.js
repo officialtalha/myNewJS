@@ -10,3 +10,8 @@ for (var i=0; i<c.length; i++)
 {
     c[i].style.fontWeight = 'bold';
 }
+var d = document.getElementsByTagName('li');
+d[4].style.color = 'red';
+
+var e = document.querySelector('.anotherClass');
+e.style.backgroundColor = 'black';
