@@ -8,9 +8,5 @@ var h1 = document.querySelector('header h1');
 container.insertBefore(newDiv, h1);
 //putting new element before item1
 
-/*var newEl = document.createElement('li');
-newEl.className = 'list-group-item';
-var newDivText2 = document.createTextNode('HEllo word');
-newEl.appendChild(newDivText2);
-var a = document.querySelector('.list-group');
-a.insertBefore(newEl, );*/
+var pnode = document.querySelector('.list-group');
+pnode.innerHTML = '<li>HEllo word</li>' + pnode.innerHTML;
