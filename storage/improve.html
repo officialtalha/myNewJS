@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <title>Booking App</title>
+
+</head>
+
+<body>
+    <!-- this is form section-->
+    <form id="contact-form">
+        <label for="user-name">Name: </label>
+        </br>
+        <input type="text" name="name" id="user-name">
+        </br>
+        <label for="user-email"> Email: </label>
+        </br>
+        <input type="email" name="User_email" id="user-email">
+        </br>
+        <label for="user-pwd">Password: </label>
+        </br>
+        <input type="password" name="pwd" id="user-pwd">
+        </br>
+        </br>
+        <input type="submit" value="Submit" id="id-submit">
+    </form>
+    <!--user's detail will store here-->
+    <ul id="unorder-list">
+
+    </ul>
+
+    <script>
+        //adding user detail to local storage in the browser
+        var form = document.getElementById('contact-form');
+
+        form.addEventListener('submit', abc);
+
+        function abc(e) {
+            e.preventDefault();
+            let storeName = e.target.name.value;
+            let storeEmail = e.target.User_email.value;
+            let storePwd = e.target.pwd.value;
+            //storing into local storage
+            let User_1 = {
+                name: storeName,
+                email: storeEmail,
+                pass: storePwd
+            };
+
+            localStorage.setItem(User_1.name, JSON.stringify(User_1));
+
+            var listItems = document.getElementById('unorder-list');
+
+            //li for name
+            var item1 = document.createElement('li');
+            item1.id = 'item1';
+            item1.className = 'class-item1';
+            item1.appendChild(document.createTextNode('Name: ' + storeName));
+            listItems.appendChild(item1);
+
+            //li for email
+            var item2 = document.createElement('li');
+            item2.id = 'item2';
+            item2.className = 'class-item2';
+            item2.appendChild(document.createTextNode('Email: ' + storeEmail));
+            listItems.appendChild(item2);
+
+            //li for password
+            var item3 = document.createElement('li');
+            item3.id = 'item3';
+            item3.className = 'class-item3';
+            item3.appendChild(document.createTextNode('Password: ' + storePwd));
+            listItems.appendChild(item3);
+
+            //adding delete button 
+            var deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.id = 'dlBtn';
+            deleteBtn.appendChild(document.createTextNode('Delete'));
+            listItems.appendChild(deleteBtn);
+
+            deleteBtn.onclick = () => {
+                localStorage.removeItem(User_1.name);
+                listItems.removeChild(item1);
+                listItems.removeChild(item2);
+                listItems.removeChild(item3);
+                listItems.removeChild(deleteBtn);
+                listItems.removeChild(editBtn);
+            }
+            //adding edit button 
+            var editBtn = document.createElement('button');
+            editBtn.type = 'button';
+            editBtn.id = 'edtBtn';
+            editBtn.appendChild(document.createTextNode('Edit'));
+            listItems.appendChild(editBtn);
+
+            editBtn.onclick = () => {
+                    localStorage.removeItem(User_1.name);
+                    var edit_name = document.querySelector('#user-name');
+                    var edit_email = document.querySelector('#user-email');
+                    var edit_pass = document.querySelector('#user-pwd');
+
+                    edit_name.value = User_1.name;
+                    edit_email.value = User_1.email;
+                    edit_pass.value = User_1.pass;
+                }
+            }
+
+
+    </script>
+
+</body>
+
+</html>
