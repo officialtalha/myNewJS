@@ -10,78 +10,88 @@
 <body>
     <!-- this is form section-->
     <form id="contact-form">
-        <label for="user-name">Name: </label>
-        </br>
-        <input type="text" name="name" id="user-name">
-        </br>
-        <label for="user-email"> Email: </label>
-        </br>
-        <input type="email" name="User_email" id="user-email">
-        </br>
-        <label for="user-pwd">Password: </label>
-        </br>
-        <input type="password" name="pwd" id="user-pwd">
-        </br>
-        </br>
-        <input type="submit" value="Submit" id="id-submit">
+        <fieldset>
+            <legend><i>Expence Tracker</legend></i></legend>
+            <label for="examount-id">Choose Expences Amount: </label>
+            </br>
+            <input type="text" name="examount" id="examount-id">
+            </br>
+            <label for="description-id"> Description: </label>
+            </br>
+            <input type="text" name="description" id="description-id">
+            </br>
+            <label for="catogary-id">Catogary: </label>
+            </br>
+            <select id="catogary-id">
+                <option value="fuel">fuel</option>
+                <option value="food">food</option>
+                <option value="electricity">electricity</option>
+                <option value="movie">movie</option>
+            </select>
+            </br>
+            </br>
+            <input type="submit" value="Add Expences" id="id-submit">
+        </fieldset>
     </form>
     <!--user's detail will store here-->
+
     <ul id="unorder-list">
 
     </ul>
 
     <script>
         //adding user detail to local storage in the browser
+
         var form = document.getElementById('contact-form');
 
         form.addEventListener('submit', abc);
 
         function abc(e) {
             e.preventDefault();
-            let storeName = e.target.name.value;
-            let storeEmail = e.target.User_email.value;
-            let storePwd = e.target.pwd.value;
+            let storeExpAmount = e.target.examount.value;
+            let storeDescription = e.target.description.value;
+            let storeCatogary = document.querySelector('#catogary-id').value;
             //storing into local storage
             let User_1 = {
-                name: storeName,
-                email: storeEmail,
-                pass: storePwd
+                Expence_Amount: storeExpAmount,
+                Description: storeDescription,
+                Catogary: storeCatogary
             };
 
-            localStorage.setItem(User_1.name, JSON.stringify(User_1));
+            localStorage.setItem(User_1.Catogary, JSON.stringify(User_1));
 
             var listItems = document.getElementById('unorder-list');
 
-            //li for name
+            //li for amount
             var item1 = document.createElement('li');
             item1.id = 'item1';
             item1.className = 'class-item1';
-            item1.appendChild(document.createTextNode('Name: ' + storeName));
+            item1.appendChild(document.createTextNode('Expence_Amount: ' + storeExpAmount));
             listItems.appendChild(item1);
 
-            //li for email
+            //li for description
             var item2 = document.createElement('li');
             item2.id = 'item2';
             item2.className = 'class-item2';
-            item2.appendChild(document.createTextNode('Email: ' + storeEmail));
+            item2.appendChild(document.createTextNode('Description: ' + storeDescription));
             listItems.appendChild(item2);
 
-            //li for password
+            //li for catogary
             var item3 = document.createElement('li');
             item3.id = 'item3';
             item3.className = 'class-item3';
-            item3.appendChild(document.createTextNode('Password: ' + storePwd));
+            item3.appendChild(document.createTextNode('Catogary: ' + storeCatogary));
             listItems.appendChild(item3);
 
             //adding delete button 
             var deleteBtn = document.createElement('button');
             deleteBtn.type = 'button';
             deleteBtn.id = 'dlBtn';
-            deleteBtn.appendChild(document.createTextNode('Delete'));
+            deleteBtn.appendChild(document.createTextNode('Delete Expence'));
             listItems.appendChild(deleteBtn);
 
             deleteBtn.onclick = () => {
-                localStorage.removeItem(User_1.name);
+                localStorage.removeItem(User_1.Catogary);
                 listItems.removeChild(item1);
                 listItems.removeChild(item2);
                 listItems.removeChild(item3);
@@ -92,21 +102,65 @@
             var editBtn = document.createElement('button');
             editBtn.type = 'button';
             editBtn.id = 'edtBtn';
-            editBtn.appendChild(document.createTextNode('Edit'));
+            editBtn.appendChild(document.createTextNode('Edit Expence'));
             listItems.appendChild(editBtn);
 
             editBtn.onclick = () => {
-                    localStorage.removeItem(User_1.name);
-                    var edit_name = document.querySelector('#user-name');
-                    var edit_email = document.querySelector('#user-email');
-                    var edit_pass = document.querySelector('#user-pwd');
+                var edit_expence = document.querySelector('#examount-id');
+                var edit_description = document.querySelector('#description-id');
+                var edit_catogary = document.querySelector('#catogary-id');
 
-                    edit_name.value = User_1.name;
-                    edit_email.value = User_1.email;
-                    edit_pass.value = User_1.pass;
+                edit_expence.value = User_1.expence_amount;
+                edit_description.value = User_1.description;
+                edit_catogary.value = User_1.catogary;
+            }
+        }
+        // //after refresh value setting
+        var listRefresh = document.getElementById('unorder-list');
+        var keys = Object.keys(localStorage);
+        if (localStorage.length != 0) {
+            for (var i = 0; i < localStorage.length; i++) {
+                var obj = JSON.parse(localStorage.getItem(keys[i]));
+                for (j in obj) {
+                    //li for amount
+                    var itemRefresh = document.createElement('li');
+                    itemRefresh.id = 'itemRefresh';
+                    itemRefresh.className = 'class-itemRefresh';
+                    itemRefresh.appendChild(document.createTextNode(j + ': ' + obj[j]));
+                    listRefresh.appendChild(itemRefresh);
+
                 }
             }
+            //adding delete button 
+            var deleteBtnRefresh = document.createElement('button');
+            deleteBtnRefresh.type = 'button';
+            deleteBtnRefresh.id = 'dlBtnrefresh';
+            deleteBtnRefresh.appendChild(document.createTextNode('Delete Expence'));
+            listRefresh.appendChild(deleteBtnRefresh);
 
+            deleteBtnRefresh.onclick = () => {
+                localStorage.removeItem(obj.Catogary);
+                listRefresh.removeChild(itemRefresh);
+                listRefresh.removeChild(deleteBtn);
+                listRefresh.removeChild(editBtn);
+            }
+            //adding edit button 
+            var editBtnRefresh = document.createElement('button');
+            editBtnRefresh.type = 'button';
+            editBtnRefresh.id = 'edtBtnRefresh';
+            editBtnRefresh.appendChild(document.createTextNode('Edit Expence'));
+            listRefresh.appendChild(editBtnRefresh);
+
+            editBtnRefresh.onclick = () => {
+                var edit_expenceRefresh = document.querySelector('#examount-id');
+                var edit_descriptionRefresh = document.querySelector('#description-id');
+                var edit_catogaryRefresh = document.querySelector('#catogary-id');
+
+                edit_expenceRefresh.value = obj.Expence_Amount;
+                edit_descriptionRefresh.value = obj.Description;
+                edit_catogaryRefresh.value = obj.Catogary;
+            }
+        }
 
     </script>
 
