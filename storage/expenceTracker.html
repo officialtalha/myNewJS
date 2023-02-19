@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Expence Tracker App</title>
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            /* background-image: url('https://img.freepik.com/premium-vector/school-seamless-scientific-pattern-formulae-chemistry-physics-geometry-mathematics_275952-179.jpg?w=996'); */
+            background-image: url('https://images.unsplash.com/photo-1614850523060-8da1d56ae167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGlnaHQlMjBjb2xvdXJ8ZW58MHx8MHx8&w=1000&q=80');
+            
+        }
+
+
+        label {
+            color: #333;
+        }
+
+        .btn-send {
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            width: 80%;
+            margin-left: 3px;
+        }
+
+        .help-block.with-errors {
+            color: #ff5050;
+            margin-top: 5px;
+
+        }
+
+        .card {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        hr {
+            border-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row ">
+
+            <div class="col-lg-7 mx-auto">
+                <div class="card mt-2 mx-auto p-4 bg-light">
+                    <div class="card-body bg-light">
+
+                        <div class="container">
+                            <form id="contact-form" role="form">
+
+
+
+                                <div class="controls">
+                                    <div class=" text-center ">
+                                        <h1>Expence Tracker</h1>
+                                    </div>
+                                    <div class=" text-center ">
+                                        <small>Choose Item and Enter Their Amount And Catogary</small>
+                                    </div>
+                                    <div class=" text-center ">
+                                        <hr>
+                                        </hr>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="form_name">Enter Amount: </label>
+                                                <input id="form_name" type="text" name="name" class="form-control"
+                                                    placeholder="Enter Amount..." required="required"
+                                                    data-error="Firstname is required.">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="form_email">Description: </label>
+                                                <input id="form_email" type="text" name="description"
+                                                    class="form-control" placeholder="Enter Detail..."
+                                                    required="required" data-error="Valid email is required.">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <!-- <label for="id-catogary> Choose Catogary: </label> -->
+                                                <select class="form-control" aria-label="Default select example" id="id-catogary">
+                                                    <option value="fuel">fuel</option>
+                                                    <option value="food">food</option>
+                                                    <option value="electricity">electricity</option>
+                                                    <option value="movie">movie</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-md-12">
+                                            <input type="submit" class="btn btn-secondary btn-send  pt-2 btn-block" value="Add Expences">
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- /.8 -->
+
+            </div>
+            <!-- /.row-->
+
+        </div>
+    </div>
+    <!--user's detail will store here-->
+
+    <ul id="unorder-list">
+
+    </ul>
+
+
+    <script>
+        //adding user detail to local storage in the browser
+
+        var form = document.getElementById('contact-form');
+
+        form.addEventListener('submit', abc);
+
+        function abc(e) {
+            e.preventDefault();
+            let storeExpAmount = e.target.name.value;
+            let storeDescription = e.target.description.value;
+            let storeCatogary = document.querySelector('#id-catogary').value;
+            //storing into local storage
+            let User_1 = {
+                Expence_Amount: storeExpAmount,
+                Description: storeDescription,
+                Catogary: storeCatogary
+            };
+
+            localStorage.setItem(User_1.Catogary, JSON.stringify(User_1));
+
+            var listItems = document.getElementById('unorder-list');
+
+            //li for amount
+            var item1 = document.createElement('li');
+            item1.id = 'item1';
+            item1.className = 'class-item1';
+            item1.appendChild(document.createTextNode('Expence_Amount: ' + storeExpAmount));
+            listItems.appendChild(item1);
+
+            //li for description
+            var item2 = document.createElement('li');
+            item2.id = 'item2';
+            item2.className = 'class-item2';
+            item2.appendChild(document.createTextNode('Description: ' + storeDescription));
+            listItems.appendChild(item2);
+
+            //li for catogary
+            var item3 = document.createElement('li');
+            item3.id = 'item3';
+            item3.className = 'class-item3';
+            item3.appendChild(document.createTextNode('Catogary: ' + storeCatogary));
+            listItems.appendChild(item3);
+
+            //adding delete button 
+            var deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.id = 'dlBtn';
+            deleteBtn.appendChild(document.createTextNode('Delete Expence'));
+            listItems.appendChild(deleteBtn);
+
+            deleteBtn.onclick = () => {
+                localStorage.removeItem(User_1.Catogary);
+                listItems.removeChild(item1);
+                listItems.removeChild(item2);
+                listItems.removeChild(item3);
+                listItems.removeChild(deleteBtn);
+                listItems.removeChild(editBtn);
+            }
+            //adding edit button 
+            var editBtn = document.createElement('button');
+            editBtn.type = 'button';
+            editBtn.id = 'edtBtn';
+            editBtn.appendChild(document.createTextNode('Edit Expence'));
+            listItems.appendChild(editBtn);
+
+            editBtn.onclick = () => {
+                var edit_expence = document.querySelector('#examount-id');
+                var edit_description = document.querySelector('#description-id');
+                var edit_catogary = document.querySelector('#catogary-id');
+
+                edit_expence.value = User_1.expence_amount;
+                edit_description.value = User_1.description;
+                edit_catogary.value = User_1.catogary;
+            }
+        }
+        // //after refresh value setting
+        var listRefresh = document.getElementById('unorder-list');
+        var keys = Object.keys(localStorage);
+        if (localStorage.length != 0) {
+            for (var i = 0; i < localStorage.length; i++) {
+                var obj = JSON.parse(localStorage.getItem(keys[i]));
+                for (j in obj) {
+                    //li for amount
+                    var itemRefresh = document.createElement('li');
+                    itemRefresh.id = 'itemRefresh';
+                    itemRefresh.className = 'class-itemRefresh';
+                    itemRefresh.appendChild(document.createTextNode(j + ': ' + obj[j]));
+                    listRefresh.appendChild(itemRefresh);
+
+                }
+            }
+            //adding delete button 
+            var deleteBtnRefresh = document.createElement('button');
+            deleteBtnRefresh.type = 'button';
+            deleteBtnRefresh.id = 'dlBtnrefresh';
+            deleteBtnRefresh.appendChild(document.createTextNode('Delete Expence'));
+            listRefresh.appendChild(deleteBtnRefresh);
+
+            deleteBtnRefresh.onclick = () => {
+                localStorage.removeItem(obj.Catogary);
+                listRefresh.removeChild(itemRefresh);
+                listRefresh.removeChild(deleteBtn);
+                listRefresh.removeChild(editBtn);
+            }
+            //adding edit button 
+            var editBtnRefresh = document.createElement('button');
+            editBtnRefresh.type = 'button';
+            editBtnRefresh.id = 'edtBtnRefresh';
+            editBtnRefresh.appendChild(document.createTextNode('Edit Expence'));
+            listRefresh.appendChild(editBtnRefresh);
+
+            editBtnRefresh.onclick = () => {
+                var edit_expenceRefresh = document.querySelector('#form_name');
+                var edit_descriptionRefresh = document.querySelector('#form_email');
+                var edit_catogaryRefresh = document.querySelector('#id-catogary');
+
+                edit_expenceRefresh.value = obj.Expence_Amount;
+                edit_descriptionRefresh.value = obj.Description;
+                edit_catogaryRefresh.value = obj.Catogary;
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
