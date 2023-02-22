@@ -161,7 +161,7 @@
             };
 
             // localStorage.setItem(User_1.Catogary, JSON.stringify(User_1));
-            axios.post('https://crudcrud.com/api/be4be7ecc3b34a01a8aa87d2bbeace11/appoinmentData', User_1)
+            axios.post('https://crudcrud.com/api/b27bc743911240509cfb53490f1adeef/appoinment', User_1)
                 .then(res => {
                     var listItems = document.getElementById('unorder-list');
 
@@ -225,7 +225,7 @@
 
         }
         // //after refresh value setting
-        axios.get('https://crudcrud.com/api/be4be7ecc3b34a01a8aa87d2bbeace11/appoinmentData')
+        axios.get(' https://crudcrud.com/api/b27bc743911240509cfb53490f1adeef/appoinment')
             .then(res => {
                 var listRefresh = document.getElementById('unorder-list2');
                 for (var j in res.data) {
