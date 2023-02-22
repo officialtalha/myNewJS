@@ -15,7 +15,7 @@
             font-family: 'Lato', sans-serif;
             /* background-image: url('https://img.freepik.com/premium-vector/school-seamless-scientific-pattern-formulae-chemistry-physics-geometry-mathematics_275952-179.jpg?w=996'); */
             background-image: url('https://images.unsplash.com/photo-1614850523060-8da1d56ae167?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGlnaHQlMjBjb2xvdXJ8ZW58MHx8MHx8&w=1000&q=80');
-            
+
         }
 
 
@@ -98,7 +98,8 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <!-- <label for="id-catogary> Choose Catogary: </label> -->
-                                                <select class="form-control" aria-label="Default select example" id="id-catogary">
+                                                <select class="form-control" aria-label="Default select example"
+                                                    id="id-catogary">
                                                     <option value="fuel">fuel</option>
                                                     <option value="food">food</option>
                                                     <option value="electricity">electricity</option>
@@ -110,7 +111,8 @@
 
 
                                         <div class="col-md-12">
-                                            <input type="submit" class="btn btn-secondary btn-send  pt-2 btn-block" value="Add Expences">
+                                            <input type="submit" class="btn btn-secondary btn-send  pt-2 btn-block"
+                                                value="Add Expences">
                                         </div>
 
                                     </div>
@@ -131,12 +133,14 @@
         </div>
     </div>
     <!--user's detail will store here-->
+    <ul id="unorder-list2">
 
+    </ul>
     <ul id="unorder-list">
 
     </ul>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script>
         //adding user detail to local storage in the browser
 
@@ -156,109 +160,133 @@
                 Catogary: storeCatogary
             };
 
-            localStorage.setItem(User_1.Catogary, JSON.stringify(User_1));
+            // localStorage.setItem(User_1.Catogary, JSON.stringify(User_1));
+            axios.post('https://crudcrud.com/api/be4be7ecc3b34a01a8aa87d2bbeace11/appoinmentData', User_1)
+                .then(res => {
+                    var listItems = document.getElementById('unorder-list');
 
-            var listItems = document.getElementById('unorder-list');
+                    //li for amount
+                    var item1 = document.createElement('li');
+                    item1.id = 'item1';
+                    item1.className = 'class-item1';
+                    item1.appendChild(document.createTextNode('Expence_Amount: ' + res.data.Expence_Amount));
+                    listItems.appendChild(item1);
 
-            //li for amount
-            var item1 = document.createElement('li');
-            item1.id = 'item1';
-            item1.className = 'class-item1';
-            item1.appendChild(document.createTextNode('Expence_Amount: ' + storeExpAmount));
-            listItems.appendChild(item1);
+                    //li for description
+                    var item2 = document.createElement('li');
+                    item2.id = 'item2';
+                    item2.className = 'class-item2';
+                    item2.appendChild(document.createTextNode('Description: ' + res.data.Description));
+                    listItems.appendChild(item2);
 
-            //li for description
-            var item2 = document.createElement('li');
-            item2.id = 'item2';
-            item2.className = 'class-item2';
-            item2.appendChild(document.createTextNode('Description: ' + storeDescription));
-            listItems.appendChild(item2);
+                    //li for catogary
+                    var item3 = document.createElement('li');
+                    item3.id = 'item3';
+                    item3.className = 'class-item3';
+                    item3.appendChild(document.createTextNode('Catogary: ' + res.data.Catogary));
+                    listItems.appendChild(item3);
 
-            //li for catogary
-            var item3 = document.createElement('li');
-            item3.id = 'item3';
-            item3.className = 'class-item3';
-            item3.appendChild(document.createTextNode('Catogary: ' + storeCatogary));
-            listItems.appendChild(item3);
+                    //adding delete button 
+                    var deleteBtn = document.createElement('button');
+                    deleteBtn.type = 'button';
+                    deleteBtn.id = 'dlBtn';
+                    deleteBtn.appendChild(document.createTextNode('Delete Expence'));
+                    listItems.appendChild(deleteBtn);
 
-            //adding delete button 
-            var deleteBtn = document.createElement('button');
-            deleteBtn.type = 'button';
-            deleteBtn.id = 'dlBtn';
-            deleteBtn.appendChild(document.createTextNode('Delete Expence'));
-            listItems.appendChild(deleteBtn);
+                    deleteBtn.onclick = () => {
+                        // localStorage.removeItem(res.data.Catogary);
+                        listItems.removeChild(item1);
+                        listItems.removeChild(item2);
+                        listItems.removeChild(item3);
+                        listItems.removeChild(deleteBtn);
+                        listItems.removeChild(editBtn);
+                    }
+                    //adding edit button 
+                    var editBtn = document.createElement('button');
+                    editBtn.type = 'button';
+                    editBtn.id = 'edtBtn';
+                    editBtn.appendChild(document.createTextNode('Edit Expence'));
+                    listItems.appendChild(editBtn);
 
-            deleteBtn.onclick = () => {
-                localStorage.removeItem(User_1.Catogary);
-                listItems.removeChild(item1);
-                listItems.removeChild(item2);
-                listItems.removeChild(item3);
-                listItems.removeChild(deleteBtn);
-                listItems.removeChild(editBtn);
-            }
-            //adding edit button 
-            var editBtn = document.createElement('button');
-            editBtn.type = 'button';
-            editBtn.id = 'edtBtn';
-            editBtn.appendChild(document.createTextNode('Edit Expence'));
-            listItems.appendChild(editBtn);
+                    editBtn.onclick = () => {
+                        var edit_expence = document.querySelector('#form_name');
+                        var edit_description = document.querySelector('#form_email');
+                        var edit_catogary = document.querySelector('#id-catogary');
 
-            editBtn.onclick = () => {
-                var edit_expence = document.querySelector('#examount-id');
-                var edit_description = document.querySelector('#description-id');
-                var edit_catogary = document.querySelector('#catogary-id');
+                        edit_expence.value = res.data.Expence_amount;
+                        edit_description.value = res.data.Description;
+                        edit_catogary.value = res.data.Catogary;
+                    }
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
 
-                edit_expence.value = User_1.expence_amount;
-                edit_description.value = User_1.description;
-                edit_catogary.value = User_1.catogary;
-            }
         }
         // //after refresh value setting
-        var listRefresh = document.getElementById('unorder-list');
-        var keys = Object.keys(localStorage);
-        if (localStorage.length != 0) {
-            for (var i = 0; i < localStorage.length; i++) {
-                var obj = JSON.parse(localStorage.getItem(keys[i]));
-                for (j in obj) {
-                    //li for amount
-                    var itemRefresh = document.createElement('li');
-                    itemRefresh.id = 'itemRefresh';
-                    itemRefresh.className = 'class-itemRefresh';
-                    itemRefresh.appendChild(document.createTextNode(j + ': ' + obj[j]));
-                    listRefresh.appendChild(itemRefresh);
+        axios.get('https://crudcrud.com/api/be4be7ecc3b34a01a8aa87d2bbeace11/appoinmentData')
+            .then(res => {
+                var listRefresh = document.getElementById('unorder-list2');
+                for (var j in res.data) {
+                    //li for first text
+                    var itemRefresh1 = document.createElement('li');
+                    itemRefresh1.id = 'itemRefresh1';
+                    itemRefresh1.className = 'class-itemRefresh1';
+                    itemRefresh1.appendChild(document.createTextNode('Expence_Amount: ' + res.data[j].Expence_Amount));
+                    listRefresh.appendChild(itemRefresh1);
 
+                    //li for second text
+                    var itemRefresh2 = document.createElement('li');
+                    itemRefresh2.id = 'itemRefresh2';
+                    itemRefresh2.className = 'class-itemRefresh2';
+                    itemRefresh2.appendChild(document.createTextNode('Description: ' + res.data[j].Description));
+                    listRefresh.appendChild(itemRefresh2);
+
+                    //li for third text
+                    var itemRefresh3 = document.createElement('li');
+                    itemRefresh3.id = 'itemRefresh3';
+                    itemRefresh3.className = 'class-itemRefresh3';
+                    itemRefresh3.appendChild(document.createTextNode('Catogary: ' + res.data[j].Catogary));
+                    listRefresh.appendChild(itemRefresh3);
+
+                    //adding delete button 
+                    var deleteBtnRefresh = document.createElement('button');
+                    deleteBtnRefresh.type = 'button';
+                    deleteBtnRefresh.id = 'dlBtnrefresh';
+                    deleteBtnRefresh.appendChild(document.createTextNode('Delete Expence'));
+                    listRefresh.appendChild(deleteBtnRefresh);
+
+                    deleteBtnRefresh.onclick = () => {
+                        // localStorage.removeItem(obj.Catogary);
+                        listRefresh.removeChild(itemRefresh1);
+                        listRefresh.removeChild(itemRefresh2);
+                        listRefresh.removeChild(itemRefresh3);
+                        listRefresh.removeChild(deleteBtnRefresh);
+                        listRefresh.removeChild(editBtnRefresh);
+                    }
+                    //adding edit button 
+                    var editBtnRefresh = document.createElement('button');
+                    editBtnRefresh.type = 'button';
+                    editBtnRefresh.id = 'edtBtnRefresh';
+                    editBtnRefresh.appendChild(document.createTextNode('Edit Expence'));
+                    listRefresh.appendChild(editBtnRefresh);
+
+                    editBtnRefresh.onclick = () => {
+                        var edit_expenceRefresh = document.querySelector('#form_name');
+                        var edit_descriptionRefresh = document.querySelector('#form_email');
+                        var edit_catogaryRefresh = document.querySelector('#id-catogary');
+
+                        edit_expenceRefresh.value = obj.Expence_Amount;
+                        edit_descriptionRefresh.value = obj.Description;
+                        edit_catogaryRefresh.value = obj.Catogary;
+                    }
                 }
             }
-            //adding delete button 
-            var deleteBtnRefresh = document.createElement('button');
-            deleteBtnRefresh.type = 'button';
-            deleteBtnRefresh.id = 'dlBtnrefresh';
-            deleteBtnRefresh.appendChild(document.createTextNode('Delete Expence'));
-            listRefresh.appendChild(deleteBtnRefresh);
-
-            deleteBtnRefresh.onclick = () => {
-                localStorage.removeItem(obj.Catogary);
-                listRefresh.removeChild(itemRefresh);
-                listRefresh.removeChild(deleteBtn);
-                listRefresh.removeChild(editBtn);
-            }
-            //adding edit button 
-            var editBtnRefresh = document.createElement('button');
-            editBtnRefresh.type = 'button';
-            editBtnRefresh.id = 'edtBtnRefresh';
-            editBtnRefresh.appendChild(document.createTextNode('Edit Expence'));
-            listRefresh.appendChild(editBtnRefresh);
-
-            editBtnRefresh.onclick = () => {
-                var edit_expenceRefresh = document.querySelector('#form_name');
-                var edit_descriptionRefresh = document.querySelector('#form_email');
-                var edit_catogaryRefresh = document.querySelector('#id-catogary');
-
-                edit_expenceRefresh.value = obj.Expence_Amount;
-                edit_descriptionRefresh.value = obj.Description;
-                edit_catogaryRefresh.value = obj.Catogary;
-            }
-        }
+            )
+            .catch(err => {
+                console.log(err);
+            })
 
     </script>
 
