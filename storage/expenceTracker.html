@@ -225,7 +225,7 @@
 
         }
         // //after refresh value setting
-        axios.get(' https://crudcrud.com/api/b27bc743911240509cfb53490f1adeef/appoinment')
+        axios.get('https://crudcrud.com/api/b27bc743911240509cfb53490f1adeef/appoinment')
             .then(res => {
                 var listRefresh = document.getElementById('unorder-list2');
                 for (var j in res.data) {
@@ -256,21 +256,23 @@
                     deleteBtnRefresh.id = 'dlBtnrefresh';
                     deleteBtnRefresh.appendChild(document.createTextNode('Delete Expence'));
                     listRefresh.appendChild(deleteBtnRefresh);
+                    let crudId = res.data[j]._id;
 
-                    deleteBtnRefresh.onclick = () => {
-                        // localStorage.removeItem(obj.Catogary);
-                        listRefresh.removeChild(itemRefresh1);
-                        listRefresh.removeChild(itemRefresh2);
-                        listRefresh.removeChild(itemRefresh3);
-                        listRefresh.removeChild(deleteBtnRefresh);
-                        listRefresh.removeChild(editBtnRefresh);
-                    }
                     //adding edit button 
                     var editBtnRefresh = document.createElement('button');
                     editBtnRefresh.type = 'button';
                     editBtnRefresh.id = 'edtBtnRefresh';
                     editBtnRefresh.appendChild(document.createTextNode('Edit Expence'));
                     listRefresh.appendChild(editBtnRefresh);
+
+                    deleteBtnRefresh.onclick = () => {
+                        axios.delete(`https://crudcrud.com/api/b27bc743911240509cfb53490f1adeef/appoinment/${crudId}`)
+                        listRefresh.removeChild(itemRefresh1);
+                        listRefresh.removeChild(itemRefresh2);
+                        listRefresh.removeChild(itemRefresh3);
+                        listRefresh.removeChild(deleteBtnRefresh);
+                        listRefresh.removeChild(editBtnRefresh);
+                    }
 
                     editBtnRefresh.onclick = () => {
                         var edit_expenceRefresh = document.querySelector('#form_name');
